@@ -5,7 +5,7 @@ interface Body<TVariables> {
 
 export const server = {
   fetch: async <TData = any, TVariables = any>(body: Body<TVariables>) => {
-    const res = await fetch("/api", {
+    const res = await fetch("http://localhost:4060/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
