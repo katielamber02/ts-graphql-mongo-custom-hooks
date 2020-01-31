@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const Listings = ({ title }: Props) => {
-  const { data } = useQuery<ListingsData>(LISTINGS); // custom
+  const { data, refetch } = useQuery<ListingsData>(LISTINGS); // custom
 
   //--------------CUSTOM-----------
   // const [listings, setListings] = useState<Listing[] | null>(null);
@@ -67,6 +67,7 @@ export const Listings = ({ title }: Props) => {
       }
     });
     // fetchListings();   // custom
+    refetch(); // refetch
   };
 
   const listings = data ? data.listings : null; // custom

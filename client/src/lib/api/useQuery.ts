@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { server } from "./server";
 
 //the shape of data will be the type of TData
@@ -14,12 +14,17 @@ export const useQuery = <TData = any>(query: string) => {
   const [state, setState] = useState<State<TData>>({
     data: null
   });
-  useEffect(() => {
+
+  const fetch = useCallback(() => {
     const fetchApi = async () => {
       const { data } = await server.fetch<TData>({ query });
       setState({ data });
     };
     fetchApi();
-  }, [query]); // query is being passed from elsewhere and is being used in the hook
-  return state;
+  }, [query]);
+
+  useEffect(() => {
+    fetch();
+  }, [query, fetch]); // query is being passed from elsewhere and is being used in the hook
+  return { ...state, refetch: fetch };
 };
