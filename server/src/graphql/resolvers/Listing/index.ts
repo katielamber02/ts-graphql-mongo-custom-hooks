@@ -9,6 +9,7 @@ export const listingResolvers: IResolvers = {
       _args: {},
       { db }: { db: Database }
     ): Promise<Listing[]> => {
+      // throw new Error("Error"); // ADDED to force error and removed
       return await db.listings.find({}).toArray();
     }
   },
