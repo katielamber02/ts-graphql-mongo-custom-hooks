@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { server } from "../../lib/api";
+import React from "react";
+import { server, useQuery } from "../../lib/api";
 import {
   DeleteListingData,
   DeleteListingVariables,
-  Listing,
+  // Listing,
   ListingsData
 } from "./types";
 
@@ -36,24 +36,28 @@ interface Props {
 }
 
 export const Listings = ({ title }: Props) => {
-  const [listings, setListings] = useState<Listing[] | null>(null);
+  const { data } = useQuery<ListingsData>(LISTINGS); // custom
 
-  useEffect(() => {
-    // preferable to use server.fetch here
-    // all functions using a hook to move to useEffect
-    // (because of function dependencies)
-    // however we need it for deleteListing
+  //--------------CUSTOM-----------
+  // const [listings, setListings] = useState<Listing[] | null>(null);
 
-    fetchListings();
-    if (listings && listings.length) {
-      console.log("listings exists", listings);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // preferable to use server.fetch here
+  //   // all functions using a hook to move to useEffect
+  //   // (because of function dependencies)
+  //   // however we need it for deleteListing
 
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
-    setListings(data.listings);
-  };
+  //   fetchListings();
+  //   if (listings && listings.length) {
+  //     console.log("listings exists", listings);
+  //   }
+  // }, []);
+
+  // const fetchListings = async () => {
+  //   const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
+  //   setListings(data.listings);
+  // };
+  //--------------CUSTOM-----------
 
   const deleteListing = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
@@ -62,8 +66,10 @@ export const Listings = ({ title }: Props) => {
         id
       }
     });
-    fetchListings();
+    // fetchListings();   // custom
   };
+
+  const listings = data ? data.listings : null; // custom
 
   const listingsList = listings ? (
     <ul>

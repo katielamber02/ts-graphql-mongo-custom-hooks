@@ -9,7 +9,7 @@ export const connectDatabase = async (): Promise<Database> => {
   const client = await MongoClient.connect(
     // mongodb://<dbuser>:<dbpassword>@ds215219.mlab.com:15219/test_listings
     // INSERT DB URL
-   ,
+
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
