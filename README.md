@@ -11,4 +11,4 @@ const res = await fetch("/api", {
 add http://localhost:PORT
 
 server: yarn start
-clien: yarn start
+client: yarn start
