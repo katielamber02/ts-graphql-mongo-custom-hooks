@@ -9,6 +9,7 @@ export const connectDatabase = async (): Promise<Database> => {
   const client = await MongoClient.connect(
     // mongodb://<dbuser>:<dbpassword>@ds215219.mlab.com:15219/test_listings
     // INSERT DB URL
+    "mongodb://katielamber02:begginYou6342@ds215219.mlab.com:15219/test_listings",
 
     {
       useNewUrlParser: true,

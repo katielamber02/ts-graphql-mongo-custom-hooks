@@ -1,13 +1,18 @@
 import React from "react";
 // import { useQuery, useMutation } from "../../lib/api";
 import { useQuery, useMutation } from "react-apollo";
-import {
-  DeleteListingData,
-  DeleteListingVariables,
-  // Listing,
-  ListingsData
-} from "./types";
+// import {
+//   DeleteListingData,
+//   DeleteListingVariables,
+//   // Listing,
+//   ListingsData
+// } from "./types";
 import gql from "graphql-tag";
+import { Listings as ListingsData } from "./__generated__/Listings";
+import {
+  DeleteListing as DeleteListingData,
+  DeleteListingVariables
+} from "./__generated__/DeleteListing";
 
 const LISTINGS = gql`
   query Listings {
@@ -66,11 +71,6 @@ export const Listings = ({ title }: Props) => {
         return (
           <li key={listing.id}>
             {listing.title} {listing.address}{" "}
-            <img
-              src={listing.image}
-              alt={listing.title}
-              style={{ width: 50, height: 50 }}
-            />
             <button onClick={() => handleDeleteListing(listing.id)}>
               Delete
             </button>
