@@ -1,10 +1,19 @@
 import React from "react";
 import { render } from "react-dom";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { Listings } from "./sections";
 import * as serviceWorker from "./serviceWorker";
 
+const client = new ApolloClient({
+  // uri: "http://localhost:4060/api"
+  uri: "/api"
+});
+
 render(
-  <Listings title="TinyHouse Listings" />,
+  <ApolloProvider client={client}>
+    <Listings title="TinyHouse Listings" />
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
