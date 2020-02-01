@@ -1,5 +1,5 @@
 import React from "react";
-import { server, useQuery } from "../../lib/api";
+import { useQuery, useMutation } from "../../lib/api";
 import {
   DeleteListingData,
   DeleteListingVariables,
@@ -38,34 +38,20 @@ interface Props {
 export const Listings = ({ title }: Props) => {
   const { data, loading, refetch, error } = useQuery<ListingsData>(LISTINGS); // custom
 
-  //--------------CUSTOM-----------
-  // const [listings, setListings] = useState<Listing[] | null>(null);
+  const [
+    deleteListing,
+    { loading: deleteListingLoading, error: deleteListingError }
+  ] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING);
 
-  // useEffect(() => {
-  //   // preferable to use server.fetch here
-  //   // all functions using a hook to move to useEffect
-  //   // (because of function dependencies)
-  //   // however we need it for deleteListing
+  const handleDeleteListing = async (id: string) => {
+    await deleteListing({ id });
+    // await server.fetch<DeleteListingData, DeleteListingVariables>({
+    //   query: DELETE_LISTING,
+    //   variables: {
+    //     id
+    //   }
+    // });
 
-  //   fetchListings();
-  //   if (listings && listings.length) {
-  //     console.log("listings exists", listings);
-  //   }
-  // }, []);
-
-  // const fetchListings = async () => {
-  //   const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
-  //   setListings(data.listings);
-  // };
-  //--------------CUSTOM-----------
-
-  const deleteListing = async (id: string) => {
-    await server.fetch<DeleteListingData, DeleteListingVariables>({
-      query: DELETE_LISTING,
-      variables: {
-        id
-      }
-    });
     // fetchListings();   // custom
     refetch(); // refetch
   };
@@ -77,8 +63,15 @@ export const Listings = ({ title }: Props) => {
       {listings.map(listing => {
         return (
           <li key={listing.id}>
-            {listing.title}{" "}
-            <button onClick={() => deleteListing(listing.id)}>Delete</button>
+            {listing.title} {listing.address}{" "}
+            <img
+              src={listing.image}
+              alt={listing.title}
+              style={{ width: 50, height: 50 }}
+            />
+            <button onClick={() => handleDeleteListing(listing.id)}>
+              Delete
+            </button>
           </li>
         );
       })}
@@ -90,11 +83,20 @@ export const Listings = ({ title }: Props) => {
   if (error) {
     return <h2 style={{ color: "red" }}>Some error happend</h2>;
   }
+  const deleteListingLoadingMessage = deleteListingLoading ? (
+    <h2>Deletion in progress...</h2>
+  ) : null;
+
+  const deleteListingErrorMessage = deleteListingError ? (
+    <h2>Something went wrong...</h2>
+  ) : null;
 
   return (
     <div>
       <h2>{title}</h2>
       {listingsList}
+      {deleteListingLoadingMessage}
+      {deleteListingErrorMessage}
       {/* <button onClick={fetchListings}>Query Listings!</button> */}
     </div>
   );
