@@ -11,4 +11,5 @@ const res = await fetch("/api", {
 add http://localhost:PORT
 
 server: yarn start
+server:yarn seed  (to fill in data into database)
 client: yarn start
